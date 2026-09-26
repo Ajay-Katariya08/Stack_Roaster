@@ -54,3 +54,5 @@ async function bootstrap() {
 }
 
 bootstrap()
+
+export default app
