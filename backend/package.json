@@ -1,20 +1,19 @@
 {
   "name": "backend",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "start": "bun src/index.ts"
+    "start": "bun src/index.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.6.2"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2"
+    "@types/node": "^20.17.0",
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
