@@ -60,9 +60,9 @@ export async function fetchRoastById(id: string): Promise<RoastRecord | null> {
   }
 }
 
-export async function fetchTopRoasts(): Promise<RoastRecord[]> {
+export async function fetchTopRoasts(limit = 60): Promise<RoastRecord[]> {
   try {
-    const res = await fetch(`${API_BASE}/api/roasts/top`, {
+    const res = await fetch(`${API_BASE}/api/roasts/top?limit=${limit}`, {
       cache: "no-store",
     });
     if (!res.ok) return [];

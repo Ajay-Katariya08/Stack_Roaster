@@ -4,7 +4,7 @@ import { useState } from "react"
 import { FileCode, Flame, ArrowRight, AlertTriangle } from "lucide-react"
 import { GithubIcon } from "./Icons"
 import { submitRoast } from "@/lib/api"
-import { ParsedStack, RoastOutput } from "@/lib/types"
+import { ParsedStack, RoastOutput, RoastRecord } from "@/lib/types"
 
 const SAMPLES = [
   {
@@ -127,6 +127,23 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
         githubUrl: tab === "github" ? githubUrl.trim() : undefined,
         code: tab === "paste" ? code.trim() : undefined
       })
+      const record: RoastRecord = {
+        _id: result.id,
+        id: result.id,
+        inputType: tab,
+        githubUrl: tab === "github" ? githubUrl.trim() : undefined,
+        stackData: result.stackData,
+        roast: result.roast,
+        shareCount: 0,
+        viewCount: 1,
+        upvotes: 0,
+        createdAt: new Date().toISOString()
+      }
+      try {
+        const stored = JSON.parse(localStorage.getItem("recent_roasts") || "[]")
+        const filtered = stored.filter((r: any) => (r._id || r.id) !== result.id)
+        localStorage.setItem("recent_roasts", JSON.stringify([record, ...filtered].slice(0, 30)))
+      } catch {}
 
       onSuccess(result)
     } catch (err: any) {

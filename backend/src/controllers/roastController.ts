@@ -164,7 +164,7 @@ export async function getTopRoasts(req: Request, res: Response): Promise<void> {
   try {
     await connectDB().catch(() => {});
     if (mongoose.connection.readyState === 1) {
-      const limit = Math.min(Number(req.query.limit) || 18, 50);
+      const limit = Math.min(Number(req.query.limit) || 60, 100);
       const roasts = await (Roast as any)
         .find()
         .sort({ upvotes: -1, shareCount: -1, createdAt: -1 })
@@ -178,9 +178,12 @@ export async function getTopRoasts(req: Request, res: Response): Promise<void> {
     }
 
     const sorted = [...memoryRoasts].sort(
-      (a, b) => (b.upvotes || 0) - (a.upvotes || 0),
+      (a, b) =>
+        (b.upvotes || 0) - (a.upvotes || 0) ||
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
-    res.json({ roasts: sorted.slice(0, 18) });
+    const limit = Math.min(Number(req.query.limit) || 60, 100);
+    res.json({ roasts: sorted.slice(0, limit) });
   } catch {
     res.status(500).json({ error: "Failed to fetch top roasts" });
   }

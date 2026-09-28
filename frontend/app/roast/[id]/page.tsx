@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { RoastCard } from "@/components/RoastCard";
 import { fetchRoastById } from "@/lib/api";
-import { Flame, ArrowLeft } from "lucide-react";
+import { Flame, ArrowLeft, Trophy } from "lucide-react";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -76,9 +76,18 @@ export default async function RoastDetailPage({ params }: PageProps) {
             Roast Your Own Stack
           </Link>
 
-          <span className="text-xs text-zinc-500 font-mono">
-            ID: {id.slice(0, 10)}
-          </span>
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/hall-of-fame?highlight=${id}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 transition-colors"
+            >
+              <Trophy className="size-3.5" />
+              <span>Hall of Flame</span>
+            </Link>
+            <span className="text-xs text-zinc-500 font-mono">
+              ID: {id.slice(0, 8)}
+            </span>
+          </div>
         </div>
 
         <RoastCard roastId={id} stack={record.stackData} roast={record.roast} />

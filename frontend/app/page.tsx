@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { Navbar } from "@/components/Navbar"
 import { RoastForm } from "@/components/RoastForm"
 import { LoadingRoast } from "@/components/LoadingRoast"
 import { RoastCard } from "@/components/RoastCard"
 import { fetchStats, LiveStats } from "@/lib/api"
 import { ParsedStack, RoastOutput } from "@/lib/types"
-import { Flame, TrendingUp, ThumbsUp, Eye, Zap, AlertTriangle } from "lucide-react"
+import { Flame, TrendingUp, ThumbsUp, Eye, Zap, AlertTriangle, Trophy, ArrowRight } from "lucide-react"
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false)
@@ -87,15 +88,25 @@ export default function HomePage() {
                 stack={result.stackData}
                 roast={result.roast}
               />
-              <button
-                onClick={() => {
-                  setResult(null)
-                  fetchStats().then(setStats)
-                }}
-                className="rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-6 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 transition-all hover:bg-black/10 dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
-              >
-                Roast Another Stack
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href={`/hall-of-fame?highlight=${result.id}`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition-all hover:brightness-110"
+                >
+                  <Trophy className="size-4" />
+                  <span>View in Hall of Flame</span>
+                  <ArrowRight className="size-4" />
+                </Link>
+                <button
+                  onClick={() => {
+                    setResult(null)
+                    fetchStats().then(setStats)
+                  }}
+                  className="rounded-xl border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-6 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 transition-all hover:bg-black/10 dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
+                >
+                  Roast Another Stack
+                </button>
+              </div>
             </div>
           ) : (
             <div className="w-full flex flex-col items-center">
