@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
+import { connectDB } from "../db";
 import { Roast } from "../models/Roast";
 import { fetchRepoStack, parseGitHubUrl } from "../services/github";
 import { generateRoast } from "../services/llm";
@@ -9,6 +10,7 @@ import type { ParsedStack } from "../types";
 const memoryRoasts: any[] = [];
 export async function createRoast(req: Request, res: Response): Promise<void> {
   try {
+    await connectDB().catch(() => {});
     const { githubUrl, code, inputType } = req.body;
 
     let stackData: ParsedStack;
@@ -84,6 +86,7 @@ export async function createRoast(req: Request, res: Response): Promise<void> {
 
 export async function getStats(req: Request, res: Response): Promise<void> {
   try {
+    await connectDB().catch(() => {});
     if (mongoose.connection.readyState === 1) {
       const totalRoasts = await Roast.countDocuments();
       const agg = await Roast.aggregate([
@@ -123,6 +126,7 @@ export async function getStats(req: Request, res: Response): Promise<void> {
 
 export async function getRoastById(req: Request, res: Response): Promise<void> {
   try {
+    await connectDB().catch(() => {});
     const id = req.params.id as string;
     if (!id) {
       res.status(400).json({ error: "Invalid roast ID" });
@@ -158,6 +162,7 @@ export async function getRoastById(req: Request, res: Response): Promise<void> {
 
 export async function getTopRoasts(req: Request, res: Response): Promise<void> {
   try {
+    await connectDB().catch(() => {});
     if (mongoose.connection.readyState === 1) {
       const limit = Math.min(Number(req.query.limit) || 18, 50);
       const roasts = await (Roast as any)
