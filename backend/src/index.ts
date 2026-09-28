@@ -141,7 +141,16 @@ app.get(["/health", "/api/health"], (_, res) => {
 app.use(["/api/roast", "/roast"], roastRouter)
 app.use(["/api/roasts", "/roasts"], roastsRouter)
 
-if (!process.env.VERCEL) {
+app.use((_req, res) => {
+  res.status(404).json({ error: "Route not found", path: _req.url })
+})
+
+app.use((err: any, _req: any, res: any, _next: any) => {
+  console.error("Unhandled error:", err)
+  res.status(500).json({ error: err?.message || "Server error" })
+})
+
+if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
   connectDB().then(() => {
     const server = app.listen(PORT, () => {
       console.log(`Roast Backend running on http://localhost:${PORT}`)
