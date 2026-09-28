@@ -17,10 +17,20 @@ export function ShareBar({ roastId, roast }: ShareBarProps) {
   const [upvotes, setUpvotes] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
 
-  const currentUrl =
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? process.env.NEXT_PUBLIC_SITE_URL.startsWith("http")
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : `https://${process.env.NEXT_PUBLIC_SITE_URL}`
+    : "";
+
+  const origin =
     typeof window !== "undefined"
-      ? `${window.location.origin}/roast/${roastId}`
-      : `https://roastmystack.dev/roast/${roastId}`;
+      ? window.location.hostname === "localhost" && siteUrl
+        ? siteUrl
+        : window.location.origin
+      : siteUrl || "https://stackroaster.vercel.app";
+
+  const currentUrl = `${origin.replace(/\/$/, "")}/roast/${roastId}`;
 
   const tweetText = `AI just destroyed my tech stack with zero mercy 🔥\n\n"${roast.headline}"\n\nRoast Score: ${roast.roastScore}/100 [Archetype: ${roast.archetypeEmoji} ${roast.archetype}]\n\nGet roasted here:`;
 

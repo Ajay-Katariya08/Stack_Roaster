@@ -36,12 +36,15 @@ export async function generateMetadata({
     openGraph: {
       title: `AI Roasted My Tech Stack (${score}/100)`,
       description: headline,
+      url: `/roast/${id}`,
+      type: "website",
       images: [
         {
           url: ogUrl,
           width: 1200,
           height: 630,
           alt: headline,
+          type: "image/png",
         },
       ],
     },

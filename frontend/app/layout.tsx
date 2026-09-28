@@ -13,8 +13,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? (process.env.NEXT_PUBLIC_SITE_URL.startsWith("http")
+      ? process.env.NEXT_PUBLIC_SITE_URL
+      : `https://${process.env.NEXT_PUBLIC_SITE_URL}`)
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://roastmystack.dev"),
+  metadataBase: new URL(siteUrl),
   title: "AI Roast My Stack — The Brutal Developer Ego-Checker",
   description:
     "Drop your GitHub repo or package.json. Let AI Senior Architect Chad ruthlessly roast your tech stack, bad coding habits, and over-engineered architecture.",
@@ -22,7 +32,7 @@ export const metadata: Metadata = {
     title: "AI Roast My Stack — The Brutal Developer Ego-Checker",
     description:
       "Drop your GitHub repo or package.json. Let AI Senior Architect Chad ruthlessly roast your tech stack.",
-    url: "https://roastmystack.dev",
+    url: "/",
     siteName: "AI Roast My Stack",
     images: [
       {
