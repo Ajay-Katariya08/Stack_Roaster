@@ -8,8 +8,15 @@ import { roastsRouter } from "./routes/roasts"
 
 dotenv.config()
 
+console.log("Backend initialized")
+
 const app = express()
 const PORT = process.env.PORT || 5001
+
+app.use((req, _res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  next()
+})
 
 app.use(cors({ origin: "*" }))
 app.use(express.json({ limit: "2mb" }))
