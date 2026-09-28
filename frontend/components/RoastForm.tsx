@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { FileCode, Flame, ArrowRight, AlertTriangle } from "lucide-react"
-import { GithubIcon } from "./Icons"
-import { submitRoast } from "@/lib/api"
-import { ParsedStack, RoastOutput, RoastRecord } from "@/lib/types"
+import { useState } from "react";
+import { FileCode, Flame, ArrowRight, AlertTriangle } from "lucide-react";
+import { GithubIcon } from "./Icons";
+import { submitRoast } from "@/lib/api";
+import { ParsedStack, RoastOutput, RoastRecord } from "@/lib/types";
 
 const SAMPLES = [
   {
@@ -22,16 +22,16 @@ const SAMPLES = [
           zustand: "5.0.0",
           axios: "1.7.0",
           lodash: "4.17.21",
-          moment: "2.30.1"
+          moment: "2.30.1",
         },
         devDependencies: {
           typescript: "5.7.0",
-          eslint: "9.0.0"
-        }
+          eslint: "9.0.0",
+        },
       },
       null,
-      2
-    )
+      2,
+    ),
   },
   {
     label: "Classic MERN Spaghetti",
@@ -45,15 +45,15 @@ const SAMPLES = [
           dotenv: "16.3.1",
           jsonwebtoken: "9.0.2",
           bcrypt: "5.1.1",
-          multer: "1.4.5"
+          multer: "1.4.5",
         },
         devDependencies: {
-          nodemon: "3.0.0"
-        }
+          nodemon: "3.0.0",
+        },
       },
       null,
-      2
-    )
+      2,
+    ),
   },
   {
     label: "jQuery 2016 Survivor",
@@ -64,69 +64,80 @@ const SAMPLES = [
           jquery: "3.2.1",
           bootstrap: "3.3.7",
           lodash: "3.10.1",
-          moment: "2.10.6"
+          moment: "2.10.6",
         },
         devDependencies: {
           gulp: "3.9.1",
-          grunt: "1.0.4"
-        }
+          grunt: "1.0.4",
+        },
       },
       null,
-      2
-    )
-  }
-]
+      2,
+    ),
+  },
+];
 
 type RoastFormProps = {
-  onSuccess: (data: { id: string; stackData: ParsedStack; roast: RoastOutput }) => void
-  onLoadingChange: (loading: boolean) => void
-  onError?: (err: string) => void
-  onClearError?: () => void
-}
+  onSuccess: (data: {
+    id: string;
+    stackData: ParsedStack;
+    roast: RoastOutput;
+  }) => void;
+  onLoadingChange: (loading: boolean) => void;
+  onError?: (err: string) => void;
+  onClearError?: () => void;
+};
 
-export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }: RoastFormProps) {
-  const [tab, setTab] = useState<"github" | "paste">("github")
-  const [githubUrl, setGithubUrl] = useState("")
-  const [code, setCode] = useState("")
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+export function RoastForm({
+  onSuccess,
+  onLoadingChange,
+  onError,
+  onClearError,
+}: RoastFormProps) {
+  const [tab, setTab] = useState<"github" | "paste">("github");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    onClearError?.()
+    e.preventDefault();
+    setError("");
+    onClearError?.();
 
     if (tab === "github") {
       if (!githubUrl.trim()) {
-        const msg = "Please enter a valid GitHub repository URL."
-        setError(msg)
-        onError?.(msg)
-        return
+        const msg = "Please enter a valid GitHub repository URL.";
+        setError(msg);
+        onError?.(msg);
+        return;
       }
       if (!githubUrl.includes("github.com/")) {
-        const msg = "URL must be a public repository on github.com (e.g. github.com/owner/repo)."
-        setError(msg)
-        onError?.(msg)
-        return
+        const msg =
+          "URL must be a public repository on github.com (e.g. github.com/owner/repo).";
+        setError(msg);
+        onError?.(msg);
+        return;
       }
     } else {
       if (!code.trim()) {
-        const msg = "Please paste your package.json or describe your tech stack."
-        setError(msg)
-        onError?.(msg)
-        return
+        const msg =
+          "Please paste your package.json or describe your tech stack.";
+        setError(msg);
+        onError?.(msg);
+        return;
       }
     }
 
     try {
-      setIsLoading(true)
-      onLoadingChange(true)
+      setIsLoading(true);
+      onLoadingChange(true);
 
       const result = await submitRoast({
         inputType: tab,
         githubUrl: tab === "github" ? githubUrl.trim() : undefined,
-        code: tab === "paste" ? code.trim() : undefined
-      })
+        code: tab === "paste" ? code.trim() : undefined,
+      });
       const record: RoastRecord = {
         _id: result.id,
         id: result.id,
@@ -137,29 +148,36 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
         shareCount: 0,
         viewCount: 1,
         upvotes: 0,
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      };
       try {
-        const stored = JSON.parse(localStorage.getItem("recent_roasts") || "[]")
-        const filtered = stored.filter((r: any) => (r._id || r.id) !== result.id)
-        localStorage.setItem("recent_roasts", JSON.stringify([record, ...filtered].slice(0, 30)))
+        const stored = JSON.parse(
+          localStorage.getItem("recent_roasts") || "[]",
+        );
+        const filtered = stored.filter(
+          (r: any) => (r._id || r.id) !== result.id,
+        );
+        localStorage.setItem(
+          "recent_roasts",
+          JSON.stringify([record, ...filtered].slice(0, 30)),
+        );
       } catch {}
 
-      onSuccess(result)
+      onSuccess(result);
     } catch (err: any) {
-      const msg = err?.message || "Failed to generate roast. Try again."
-      setError(msg)
-      onError?.(msg)
-      setIsLoading(false)
-      onLoadingChange(false)
+      const msg = err?.message || "Failed to generate roast. Try again.";
+      setError(msg);
+      onError?.(msg);
+      setIsLoading(false);
+      onLoadingChange(false);
     }
-  }
+  };
 
   const handleLoadSample = (sampleCode: string) => {
-    setTab("paste")
-    setCode(sampleCode)
-    setError("")
-  }
+    setTab("paste");
+    setCode(sampleCode);
+    setError("");
+  };
 
   return (
     <div className="w-full max-w-2xl rounded-2xl border border-black/10 dark:border-white/10 bg-[var(--card)] p-5 shadow-xl backdrop-blur-xl transition-colors duration-200 sm:p-7">
@@ -167,8 +185,8 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
         <button
           type="button"
           onClick={() => {
-            setTab("github")
-            setError("")
+            setTab("github");
+            setError("");
           }}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-semibold transition-all ${
             tab === "github"
@@ -183,8 +201,8 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
         <button
           type="button"
           onClick={() => {
-            setTab("paste")
-            setError("")
+            setTab("paste");
+            setError("");
           }}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-semibold transition-all ${
             tab === "paste"
@@ -213,7 +231,8 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
               />
             </div>
             <p className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
-              Works on public repositories. We'll scan dependencies, Dockerfiles, and test configs.
+              Works on public repositories. We'll scan dependencies,
+              Dockerfiles, and test configs.
             </p>
           </div>
         ) : (
@@ -252,8 +271,10 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
           <div className="flex items-start gap-2.5 rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-xs text-red-600 dark:text-red-400">
             <AlertTriangle className="size-4 shrink-0 text-red-500 mt-0.5" />
             <div className="flex-1">
-              <p className="font-semibold">AI Roast Failed</p>
-              <p className="mt-0.5 text-zinc-700 dark:text-zinc-300 leading-relaxed">{error}</p>
+              <p className="font-semibold">Roast Failed</p>
+              <p className="mt-0.5 text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                {error}
+              </p>
             </div>
           </div>
         )}
@@ -269,5 +290,5 @@ export function RoastForm({ onSuccess, onLoadingChange, onError, onClearError }:
         </button>
       </form>
     </div>
-  )
+  );
 }

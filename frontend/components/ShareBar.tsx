@@ -48,7 +48,7 @@ export function ShareBar({ roastId, roast }: ShareBarProps) {
 
   const handleRedditShare = () => {
     recordShare(roastId);
-    const title = `AI roasted my tech stack: "${roast.headline}" (${roast.roastScore}/100)`;
+    const title = `Roasted my tech stack: "${roast.headline}" (${roast.roastScore}/100)`;
     const url = `https://reddit.com/submit?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(title)}`;
     window.open(url, "_blank", "noopener,noreferrer");
   };

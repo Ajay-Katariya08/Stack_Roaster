@@ -1,6 +1,8 @@
 import { ParsedStack, RoastOutput, RoastRecord } from "./types";
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001").replace(/\/$/, "");
+const API_BASE = (
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001"
+).replace(/\/$/, "");
 
 export type LiveStats = {
   totalRoasts: number;
@@ -41,7 +43,7 @@ export async function submitRoast(data: {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(
-      err.message || err.error || "Backend failed to generate AI roast.",
+      err.message || err.error || "Backend failed to generate Roast.",
     );
   }
 

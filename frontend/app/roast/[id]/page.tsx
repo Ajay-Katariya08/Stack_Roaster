@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   if (!record) {
     return {
-      title: "Roast Not Found | AI Roast My Stack",
+      title: "Roast Not Found | Roast My Stack",
       description: "This stack roast does not exist.",
     };
   }
@@ -31,10 +31,10 @@ export async function generateMetadata({
   const ogUrl = `/api/og?score=${score}&archetype=${encodeURIComponent(archetype)}&emoji=${encodeURIComponent(emoji)}&headline=${encodeURIComponent(headline)}`;
 
   return {
-    title: `Roast Score: ${score}/100 — ${archetype} | AI Roast My Stack`,
+    title: `Roast Score: ${score}/100 - ${archetype} | Roast My Stack`,
     description: headline,
     openGraph: {
-      title: `AI Roasted My Tech Stack (${score}/100)`,
+      title: `Roasted My Tech Stack (${score}/100)`,
       description: headline,
       url: `/roast/${id}`,
       type: "website",
@@ -50,7 +50,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `AI Roasted My Tech Stack (${score}/100)`,
+      title: `Roasted My Tech Stack (${score}/100)`,
       description: headline,
       images: [ogUrl],
     },

@@ -10,7 +10,7 @@ function extractFriendlyMessage(err: any): string {
     lower.includes("high demand") ||
     lower.includes("unavailable")
   ) {
-    return "Google Gemini AI is currently experiencing temporary high demand (503). Please wait 5-10 seconds and try again.";
+    return "site is currently experiencing temporary high demand (503). Please wait 5-10 seconds and try again.";
   }
   if (
     lower.includes("api_key_invalid") ||
@@ -19,10 +19,10 @@ function extractFriendlyMessage(err: any): string {
     lower.includes("unauthenticated") ||
     lower.includes("permission_denied")
   ) {
-    return "Invalid Gemini API key. Please update GEMINI_API_KEY in backend/.env with a valid Google AI Studio key (starts with AIzaSy).";
+    return "Invalid key. Please update GEMINI_API_KEY in backend/.env with a valid Google AI Studio key (starts with AIzaSy).";
   }
   if (lower.includes("resource_exhausted") || lower.includes("quota")) {
-    return "Gemini API rate limit or quota exceeded. Please wait a moment or check your Google AI Studio quota.";
+    return "Site rate limit or quota exceeded. Please wait a moment or check your Google AI Studio quota.";
   }
   try {
     const jsonStart = raw.indexOf("{");
@@ -33,7 +33,7 @@ function extractFriendlyMessage(err: any): string {
       }
     }
   } catch {}
-  return raw || "Unable to reach Gemini AI service.";
+  return raw || "Unable to reach  service.";
 }
 
 export async function generateRoast(stack: ParsedStack): Promise<RoastOutput> {
