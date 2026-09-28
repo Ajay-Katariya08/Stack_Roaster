@@ -16,27 +16,43 @@ app.use(cors({ origin: "*" }))
 app.use(express.json({ limit: "2mb" }))
 
 let isConnected = false
+let connectPromise: Promise<void> | null = null
+
 async function connectDB() {
   if (isConnected || mongoose.connection.readyState === 1) return
   if (!MONGODB_URI) return
-  try {
-    await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000,
-      maxPoolSize: 20,
-      minPoolSize: 2
-    })
-    isConnected = true
-  } catch (err: any) {
-    console.warn("MongoDB connection warning:", err?.message)
-  }
+  if (connectPromise) return connectPromise
+
+  connectPromise = (async () => {
+    try {
+      await mongoose.connect(MONGODB_URI, {
+        serverSelectionTimeoutMS: 2500,
+        connectTimeoutMS: 2500,
+        socketTimeoutMS: 2500,
+        bufferCommands: false
+      })
+      isConnected = true
+    } catch (err: any) {
+      console.warn("MongoDB connection warning:", err?.message)
+    } finally {
+      connectPromise = null
+    }
+  })()
+
+  return connectPromise
 }
 
 app.use(async (_req, _res, next) => {
-  await connectDB()
+  try {
+    await Promise.race([
+      connectDB(),
+      new Promise((resolve) => setTimeout(resolve, 1500))
+    ])
+  } catch {}
   next()
 })
 
-app.get("/", (_, res) => {
+app.get(["/", "/api"], (_, res) => {
   res.json({
     status: "ok",
     name: "AI Roast My Stack API",
@@ -45,7 +61,7 @@ app.get("/", (_, res) => {
   })
 })
 
-app.get("/health", (_, res) => {
+app.get(["/health", "/api/health"], (_, res) => {
   res.json({
     status: "ok",
     dbState: mongoose.connection.readyState,
@@ -53,8 +69,8 @@ app.get("/health", (_, res) => {
   })
 })
 
-app.use("/api/roast", roastRouter)
-app.use("/api/roasts", roastsRouter)
+app.use(["/api/roast", "/roast"], roastRouter)
+app.use(["/api/roasts", "/roasts"], roastsRouter)
 
 if (!process.env.VERCEL) {
   connectDB().then(() => {
