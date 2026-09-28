@@ -115,7 +115,7 @@ export default function HomePage() {
                   <div className="flex items-start gap-3">
                     <AlertTriangle className="size-5 shrink-0 text-red-500 mt-0.5" />
                     <div className="flex-1">
-                      <p className="font-bold text-sm text-red-700 dark:text-red-300">AI Service Alert</p>
+                      <p className="font-bold text-sm text-red-700 dark:text-red-300">Service Alert</p>
                       <p className="mt-1 text-xs leading-relaxed text-zinc-800 dark:text-zinc-200">{error}</p>
                     </div>
                   </div>
