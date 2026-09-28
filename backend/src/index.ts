@@ -2,9 +2,9 @@ import cors from "cors"
 import dotenv from "dotenv"
 import express from "express"
 import mongoose from "mongoose"
-import { connectDB } from "./db"
-import { roastRouter } from "./routes/roast"
-import { roastsRouter } from "./routes/roasts"
+import { connectDB } from "./db.js"
+import { roastRouter } from "./routes/roast.js"
+import { roastsRouter } from "./routes/roasts.js"
 
 dotenv.config()
 

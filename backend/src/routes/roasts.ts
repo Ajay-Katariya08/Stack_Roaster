@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { getRoastById, getStats, getTopRoasts, incrementShare, upvoteRoast } from "../controllers/roastController"
+import { getRoastById, getStats, getTopRoasts, incrementShare, upvoteRoast } from "../controllers/roastController.js"
 
 export const roastsRouter = Router()
 

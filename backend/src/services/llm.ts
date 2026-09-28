@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import { ROAST_SYSTEM_PROMPT } from "../prompts/roast";
-import type { ParsedStack, RoastOutput } from "../types";
+import { ROAST_SYSTEM_PROMPT } from "../prompts/roast.js";
+import type { ParsedStack, RoastOutput } from "../types.js";
 
 function extractFriendlyMessage(err: any): string {
   const raw = err?.message || "";

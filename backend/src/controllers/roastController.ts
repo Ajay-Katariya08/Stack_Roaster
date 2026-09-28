@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
-import { connectDB } from "../db";
-import { Roast } from "../models/Roast";
-import { fetchRepoStack, parseGitHubUrl } from "../services/github";
-import { generateRoast } from "../services/llm";
-import { parsePackageJson, parseRawStack } from "../services/parser";
-import type { ParsedStack } from "../types";
+import { connectDB } from "../db.js";
+import { Roast } from "../models/Roast.js";
+import { fetchRepoStack, parseGitHubUrl } from "../services/github.js";
+import { generateRoast } from "../services/llm.js";
+import { parsePackageJson, parseRawStack } from "../services/parser.js";
+import type { ParsedStack } from "../types.js";
 
 const memoryRoasts: any[] = [];
 export async function createRoast(req: Request, res: Response): Promise<void> {

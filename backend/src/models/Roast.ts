@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import type { ParsedStack, RoastOutput } from "../types"
+import type { ParsedStack, RoastOutput } from "../types.js"
 
 export type TRoast = {
   inputType: "github" | "paste"

@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest"
-import type { ParsedStack } from "../types"
-import { parsePackageJson, parseRawStack } from "./parser"
+import type { ParsedStack } from "../types.js"
+import { parsePackageJson, parseRawStack } from "./parser.js"
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN || undefined

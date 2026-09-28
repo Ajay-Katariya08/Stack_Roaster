@@ -1,4 +1,4 @@
-import type { ParsedStack } from "../types"
+import type { ParsedStack } from "../types.js"
 
 type PackageJson = {
   name?: string
