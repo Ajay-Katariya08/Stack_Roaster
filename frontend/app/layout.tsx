@@ -1,17 +1,17 @@
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { ThemeProvider } from "@wrksz/themes/next"
-import "./globals.css"
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@wrksz/themes/next";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://roastmystack.dev"),
@@ -28,11 +28,11 @@ export const metadata: Metadata = {
       {
         url: "/api/og?score=94&archetype=The%20Resume-Driven%20Architect&emoji=%F0%9F%9B%B8&headline=You%20summoned%2042%20dependencies%20just%20to%20center%20a%20div.",
         width: 1200,
-        height: 630
-      }
+        height: 630,
+      },
     ],
     locale: "en_US",
-    type: "website"
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
@@ -40,21 +40,18 @@ export const metadata: Metadata = {
     description:
       "Drop your GitHub repo or package.json. Let AI Senior Architect Chad ruthlessly roast your tech stack.",
     images: [
-      "/api/og?score=94&archetype=The%20Resume-Driven%20Architect&emoji=%F0%9F%9B%B8&headline=You%20summoned%2042%20dependencies%20just%20to%20center%20a%20div."
-    ]
+      "/api/og?score=94&archetype=The%20Resume-Driven%20Architect&emoji=%F0%9F%9B%B8&headline=You%20summoned%2042%20dependencies%20just%20to%20center%20a%20div.",
+    ],
   },
   icons: {
-    icon: [
-      { url: "/icon" },
-      { url: "/favicon.svg", type: "image/svg+xml" }
-    ],
-    apple: "/apple-icon"
-  }
-}
+    icon: [{ url: "/icon" }, { url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: "/apple-icon",
+  },
+};
 
 type RootLayoutProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
@@ -69,5 +66,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

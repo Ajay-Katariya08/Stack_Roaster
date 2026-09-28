@@ -1,32 +1,34 @@
-import { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import { Navbar } from "@/components/Navbar"
-import { RoastCard } from "@/components/RoastCard"
-import { fetchRoastById } from "@/lib/api"
-import { Flame, ArrowLeft } from "lucide-react"
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Navbar } from "@/components/Navbar";
+import { RoastCard } from "@/components/RoastCard";
+import { fetchRoastById } from "@/lib/api";
+import { Flame, ArrowLeft } from "lucide-react";
 
 type PageProps = {
-  params: Promise<{ id: string }>
-}
+  params: Promise<{ id: string }>;
+};
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params
-  const record = await fetchRoastById(id)
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const record = await fetchRoastById(id);
 
   if (!record) {
     return {
       title: "Roast Not Found | AI Roast My Stack",
-      description: "This stack roast does not exist."
-    }
+      description: "This stack roast does not exist.",
+    };
   }
 
-  const headline = record.roast.headline
-  const score = record.roast.roastScore
-  const archetype = record.roast.archetype
-  const emoji = record.roast.archetypeEmoji
+  const headline = record.roast.headline;
+  const score = record.roast.roastScore;
+  const archetype = record.roast.archetype;
+  const emoji = record.roast.archetypeEmoji;
 
-  const ogUrl = `/api/og?score=${score}&archetype=${encodeURIComponent(archetype)}&emoji=${encodeURIComponent(emoji)}&headline=${encodeURIComponent(headline)}`
+  const ogUrl = `/api/og?score=${score}&archetype=${encodeURIComponent(archetype)}&emoji=${encodeURIComponent(emoji)}&headline=${encodeURIComponent(headline)}`;
 
   return {
     title: `Roast Score: ${score}/100 — ${archetype} | AI Roast My Stack`,
@@ -39,25 +41,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           url: ogUrl,
           width: 1200,
           height: 630,
-          alt: headline
-        }
-      ]
+          alt: headline,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `AI Roasted My Tech Stack (${score}/100)`,
       description: headline,
-      images: [ogUrl]
-    }
-  }
+      images: [ogUrl],
+    },
+  };
 }
 
 export default async function RoastDetailPage({ params }: PageProps) {
-  const { id } = await params
-  const record = await fetchRoastById(id)
+  const { id } = await params;
+  const record = await fetchRoastById(id);
 
   if (!record) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -82,9 +84,12 @@ export default async function RoastDetailPage({ params }: PageProps) {
         <RoastCard roastId={id} stack={record.stackData} roast={record.roast} />
 
         <div className="mt-12 flex flex-col items-center text-center">
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Think your stack is better?</h3>
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+            Think your stack is better?
+          </h3>
           <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
-            Submit your GitHub repository or package.json to test your developer ego.
+            Submit your GitHub repository or package.json to test your developer
+            ego.
           </p>
           <Link
             href="/"
@@ -96,5 +101,5 @@ export default async function RoastDetailPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }
